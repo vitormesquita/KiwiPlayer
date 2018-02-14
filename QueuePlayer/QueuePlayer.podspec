@@ -11,10 +11,6 @@ Pod::Spec.new do |s|
   s.version          = '0.1.0'
   s.summary          = 'A cuple of code to help develop a new app'
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
-
   s.homepage         = 'https://github.com/vitormesquita/QueuePlayer'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Vitor mesquita' => 'vitor.mesquita09@gmail.com' }
@@ -22,13 +18,6 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '9.0'
 
-  s.default_subspec = "/"
-
-  s.subspec "/" do |ss|
-    ss.source_files  = "Source/*.swift"
-    ss.framework  = "UIKit"
-    ss.framework  = "AVFoundation"
-
-  end
+  s.source_files = 'Source/*.swift'
 
 end
