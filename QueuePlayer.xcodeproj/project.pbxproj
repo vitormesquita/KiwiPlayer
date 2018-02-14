@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FCE354B12034E0AF0001ABB4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE354AF2034E0AF0001ABB4 /* ViewController.swift */; };
+		FCE354B22034E0AF0001ABB4 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE354B02034E0AF0001ABB4 /* ViewController.xib */; };
 		FCF29E802034C16E0020FA8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E7F2034C16E0020FA8B /* AppDelegate.swift */; };
 		FCF29E872034C16E0020FA8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCF29E862034C16E0020FA8B /* Assets.xcassets */; };
 		FCF29E8A2034C16E0020FA8B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCF29E882034C16E0020FA8B /* LaunchScreen.storyboard */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FCE354AF2034E0AF0001ABB4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FCE354B02034E0AF0001ABB4 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		FCF29E7C2034C16E0020FA8B /* QueuePlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QueuePlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCF29E7F2034C16E0020FA8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FCF29E862034C16E0020FA8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -42,6 +46,7 @@
 		FCF29E732034C16E0020FA8B = {
 			isa = PBXGroup;
 			children = (
+				FCF29E912034C1870020FA8B /* Source */,
 				FCF29E7E2034C16E0020FA8B /* QueuePlayer */,
 				FCF29E7D2034C16E0020FA8B /* Products */,
 			);
@@ -58,16 +63,17 @@
 		FCF29E7E2034C16E0020FA8B /* QueuePlayer */ = {
 			isa = PBXGroup;
 			children = (
-				FCF29E912034C1870020FA8B /* source */,
 				FCF29E7F2034C16E0020FA8B /* AppDelegate.swift */,
 				FCF29E862034C16E0020FA8B /* Assets.xcassets */,
 				FCF29E882034C16E0020FA8B /* LaunchScreen.storyboard */,
 				FCF29E8B2034C16E0020FA8B /* Info.plist */,
+				FCE354AF2034E0AF0001ABB4 /* ViewController.swift */,
+				FCE354B02034E0AF0001ABB4 /* ViewController.xib */,
 			);
 			path = QueuePlayer;
 			sourceTree = "<group>";
 		};
-		FCF29E912034C1870020FA8B /* source */ = {
+		FCF29E912034C1870020FA8B /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				FCF29E922034C1970020FA8B /* QueuePlayer.swift */,
@@ -75,7 +81,7 @@
 				FCF29E962034C1BE0020FA8B /* QueuePlayer+ApplicationObservers.swift */,
 				FCF29E982034C1D80020FA8B /* QueuePlayer+AVPlayerItemObservers.swift */,
 			);
-			path = source;
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCF29E8A2034C16E0020FA8B /* LaunchScreen.storyboard in Resources */,
+				FCE354B22034E0AF0001ABB4 /* ViewController.xib in Resources */,
 				FCF29E872034C16E0020FA8B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -149,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCE354B12034E0AF0001ABB4 /* ViewController.swift in Sources */,
 				FCF29E972034C1BE0020FA8B /* QueuePlayer+ApplicationObservers.swift in Sources */,
 				FCF29E932034C1970020FA8B /* QueuePlayer.swift in Sources */,
 				FCF29E992034C1D80020FA8B /* QueuePlayer+AVPlayerItemObservers.swift in Sources */,

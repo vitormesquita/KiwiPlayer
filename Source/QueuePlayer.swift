@@ -12,6 +12,7 @@ import AVFoundation
 public protocol QueuePlayerDelegate: class {
     func bufferingStateDidChange(_ bufferState: BufferingState)
     func playbackStateDidChange(_ playerState: PlaybackState)
+    func playbackTimeDidChange(_ seconds: Float64)
     func playbackQueueIsOver()
 }
 
@@ -34,7 +35,7 @@ open class QueuePlayer: NSObject {
     public var playerLayer: AVPlayerLayer
     public weak var delegate: QueuePlayerDelegate?
     
-    internal var playerItems: [AVPlayerItem]
+    internal var playerItems: [AVPlayerItem] = []
     internal var nextPlayer: AVPlayer?
     
     internal var currentItem: AVPlayerItem? {
@@ -59,6 +60,7 @@ open class QueuePlayer: NSObject {
             
             playerLayer.player = newValue
             
+            addPlayerObserver()
             addPlayerItemObservers(newValue?.currentItem)
         }
     }
@@ -77,9 +79,8 @@ open class QueuePlayer: NSObject {
     
     internal var timeObserver: Any?
     
-    public init(items: [URL]) {
+    public override init() {
         playerLayer = AVPlayerLayer()
-        playerItems = items.map { AVURLAsset(url: $0) }.map { AVPlayerItem(asset: $0) }
         
         super.init()
         
@@ -132,6 +133,11 @@ extension QueuePlayer {
         set {
             currentPlayer?.volume = newValue
         }
+    }
+    
+    ///TODO
+    public func setVideosURL(_ videosURL: [URL]) {
+        playerItems = videosURL.map { AVURLAsset(url: $0) }.map { AVPlayerItem(asset: $0) }
     }
     
     /// Set `currentPlayer` with first item in queue
