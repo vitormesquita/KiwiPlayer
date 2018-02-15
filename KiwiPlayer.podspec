@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KiwiPlayer'
-  s.version          = '0.1.1'
-  s.summary          = 'A cuple of code to help develop a new app'
+  s.version          = '0.1.2'
+  s.summary          = 'Kiwi Player allows you go forward and go back in videos easily! 💃'
   s.homepage         = 'https://github.com/vitormesquita/KiwiPlayer'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Vitor mesquita' => 'vitor.mesquita09@gmail.com' }
