@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: QueuePlayerDelegate {
+extension ViewController: KiwiPlayerDelegate {
     func playbackTimeDidChange(_ seconds: Float64) {
         slider.value = Float(seconds)
     }

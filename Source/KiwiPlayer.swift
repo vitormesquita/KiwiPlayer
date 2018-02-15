@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-public protocol QueuePlayerDelegate: class {
+public protocol KiwiPlayerDelegate: class {
     func bufferingStateDidChange(_ bufferState: BufferingState)
     func playbackStateDidChange(_ playerState: PlaybackState)
     func playbackTimeDidChange(_ seconds: Float64)
@@ -37,7 +37,7 @@ open class KiwiPlayer: NSObject {
     public var playerLayer: AVPlayerLayer
     
     /// QueuePlayer's delegate to notify when change something
-    public weak var delegate: QueuePlayerDelegate?
+    public weak var delegate: KiwiPlayerDelegate?
     
     /// Video queue
     internal var itemsQueue: [AVPlayerItem] = []
@@ -75,13 +75,14 @@ open class KiwiPlayer: NSObject {
         }
         set {
             playerItemRemoveObservers(playerLayer.player?.currentItem)
+            removePlayerObserver(playerLayer.player)
             
             newValue?.volume = volume
             newValue?.actionAtItemEnd = .pause
             
             playerLayer.player = newValue
             
-            addPlayerObserver()
+            addPlayerObserver(newValue)
             addPlayerItemObservers(newValue?.currentItem)
         }
     }
@@ -110,7 +111,6 @@ open class KiwiPlayer: NSObject {
     
     deinit {
         removeApplicationObservers()
-        removePlayerObserver()
         
         currentPlayer = nil
         currentItem = nil
