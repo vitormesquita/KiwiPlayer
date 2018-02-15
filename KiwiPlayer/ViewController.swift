@@ -29,11 +29,7 @@ class ViewController: UIViewController {
         queuePlayer.playFromBeginnig()
         view.layer.addSublayer(queuePlayer.playerLayer)
         
-        
         slider.maximumValue = Float(queuePlayer.totalDurationInSeconds)
-        
-        print(slider.maximumValue)
-        print(queuePlayer.totalDurationInSeconds)
     }
     
     override func viewDidLayoutSubviews() {
