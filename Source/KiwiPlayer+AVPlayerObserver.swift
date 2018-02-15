@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 // MARK: - AVPlayer Observer
-extension QueuePlayer {
+extension KiwiPlayer {
     
     internal func addPlayerObserver() {
         timeObserver = currentPlayer?.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 2), queue: DispatchQueue.main, using: {[weak self] (time) in

@@ -9,7 +9,7 @@
 import UIKit
 
 // MARK: - Application Observers
-extension QueuePlayer {
+extension KiwiPlayer {
     
     internal func addApplicationObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: .UIApplicationWillResignActive, object: UIApplication.shared)

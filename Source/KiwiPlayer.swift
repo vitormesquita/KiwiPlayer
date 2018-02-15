@@ -30,7 +30,7 @@ public enum PlaybackState {
     case failed
 }
 
-open class QueuePlayer: NSObject {
+open class KiwiPlayer: NSObject {
     
     /// AVPlayerLayer to be inserted as `subLayer` in `UIView` as well as others views
     /// It's important to set it's frame layer to be showed correctly
@@ -134,7 +134,7 @@ open class QueuePlayer: NSObject {
 }
 
 // MARK: - Public
-extension QueuePlayer {
+extension KiwiPlayer {
     
     /// Total duration from all videos in seconds
     public var totalDurationInSeconds: Float64 {

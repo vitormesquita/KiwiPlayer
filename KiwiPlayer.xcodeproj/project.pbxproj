@@ -12,10 +12,10 @@
 		FCF29E802034C16E0020FA8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E7F2034C16E0020FA8B /* AppDelegate.swift */; };
 		FCF29E872034C16E0020FA8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCF29E862034C16E0020FA8B /* Assets.xcassets */; };
 		FCF29E8A2034C16E0020FA8B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCF29E882034C16E0020FA8B /* LaunchScreen.storyboard */; };
-		FCF29E932034C1970020FA8B /* QueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E922034C1970020FA8B /* QueuePlayer.swift */; };
-		FCF29E952034C1AE0020FA8B /* QueuePlayer+AVPlayerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E942034C1AE0020FA8B /* QueuePlayer+AVPlayerObserver.swift */; };
-		FCF29E972034C1BE0020FA8B /* QueuePlayer+ApplicationObservers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E962034C1BE0020FA8B /* QueuePlayer+ApplicationObservers.swift */; };
-		FCF29E992034C1D80020FA8B /* QueuePlayer+AVPlayerItemObservers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E982034C1D80020FA8B /* QueuePlayer+AVPlayerItemObservers.swift */; };
+		FCF29E932034C1970020FA8B /* KiwiPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E922034C1970020FA8B /* KiwiPlayer.swift */; };
+		FCF29E952034C1AE0020FA8B /* KiwiPlayer+AVPlayerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E942034C1AE0020FA8B /* KiwiPlayer+AVPlayerObserver.swift */; };
+		FCF29E972034C1BE0020FA8B /* KiwiPlayer+ApplicationObservers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E962034C1BE0020FA8B /* KiwiPlayer+ApplicationObservers.swift */; };
+		FCF29E992034C1D80020FA8B /* KiwiPlayer+AVPlayerItemObservers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E982034C1D80020FA8B /* KiwiPlayer+AVPlayerItemObservers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,10 +26,10 @@
 		FCF29E862034C16E0020FA8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FCF29E892034C16E0020FA8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FCF29E8B2034C16E0020FA8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FCF29E922034C1970020FA8B /* QueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuePlayer.swift; sourceTree = "<group>"; };
-		FCF29E942034C1AE0020FA8B /* QueuePlayer+AVPlayerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QueuePlayer+AVPlayerObserver.swift"; sourceTree = "<group>"; };
-		FCF29E962034C1BE0020FA8B /* QueuePlayer+ApplicationObservers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QueuePlayer+ApplicationObservers.swift"; sourceTree = "<group>"; };
-		FCF29E982034C1D80020FA8B /* QueuePlayer+AVPlayerItemObservers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QueuePlayer+AVPlayerItemObservers.swift"; sourceTree = "<group>"; };
+		FCF29E922034C1970020FA8B /* KiwiPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiwiPlayer.swift; sourceTree = "<group>"; };
+		FCF29E942034C1AE0020FA8B /* KiwiPlayer+AVPlayerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KiwiPlayer+AVPlayerObserver.swift"; sourceTree = "<group>"; };
+		FCF29E962034C1BE0020FA8B /* KiwiPlayer+ApplicationObservers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KiwiPlayer+ApplicationObservers.swift"; sourceTree = "<group>"; };
+		FCF29E982034C1D80020FA8B /* KiwiPlayer+AVPlayerItemObservers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KiwiPlayer+AVPlayerItemObservers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,10 +76,10 @@
 		FCF29E912034C1870020FA8B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				FCF29E922034C1970020FA8B /* QueuePlayer.swift */,
-				FCF29E942034C1AE0020FA8B /* QueuePlayer+AVPlayerObserver.swift */,
-				FCF29E962034C1BE0020FA8B /* QueuePlayer+ApplicationObservers.swift */,
-				FCF29E982034C1D80020FA8B /* QueuePlayer+AVPlayerItemObservers.swift */,
+				FCF29E922034C1970020FA8B /* KiwiPlayer.swift */,
+				FCF29E942034C1AE0020FA8B /* KiwiPlayer+AVPlayerObserver.swift */,
+				FCF29E962034C1BE0020FA8B /* KiwiPlayer+ApplicationObservers.swift */,
+				FCF29E982034C1D80020FA8B /* KiwiPlayer+AVPlayerItemObservers.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -157,10 +157,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCE354B12034E0AF0001ABB4 /* ViewController.swift in Sources */,
-				FCF29E972034C1BE0020FA8B /* QueuePlayer+ApplicationObservers.swift in Sources */,
-				FCF29E932034C1970020FA8B /* QueuePlayer.swift in Sources */,
-				FCF29E992034C1D80020FA8B /* QueuePlayer+AVPlayerItemObservers.swift in Sources */,
-				FCF29E952034C1AE0020FA8B /* QueuePlayer+AVPlayerObserver.swift in Sources */,
+				FCF29E972034C1BE0020FA8B /* KiwiPlayer+ApplicationObservers.swift in Sources */,
+				FCF29E932034C1970020FA8B /* KiwiPlayer.swift in Sources */,
+				FCF29E992034C1D80020FA8B /* KiwiPlayer+AVPlayerItemObservers.swift in Sources */,
+				FCF29E952034C1AE0020FA8B /* KiwiPlayer+AVPlayerObserver.swift in Sources */,
 				FCF29E802034C16E0020FA8B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

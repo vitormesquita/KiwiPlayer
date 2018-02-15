@@ -12,17 +12,13 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var slider: UISlider!
     
-    let urlString: [String] = ["https://www.youtube.com/watch?v=aVS4W7GZSq0",]
-//                               "http://player.vimeo.com/external/250052960.hd.mp4?s=9042ec29bf99314249e9fd705389148597fcea27&profile_id=174&oauth2_token_id=1029745847",
-//                               "http://player.vimeo.com/external/250052986.sd.mp4?s=9820d07a13ef83b4d497c92906cda4870c02cbbe&profile_id=164&oauth2_token_id=1029745847",
-//                               "http://player.vimeo.com/external/248599675.sd.mp4?s=41a30b1601356596a20c6c1cf3945caec816a08c&profile_id=164&oauth2_token_id=1029745847"]
+    let urlString: [String] = ["http://techslides.com/demos/sample-videos/small.mp4"]
 
     var items: [URL] = []
-    var queuePlayer: QueuePlayer = QueuePlayer()
+    var queuePlayer: KiwiPlayer = KiwiPlayer()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
         items = urlString
             .map { URL(string: $0) }
             .filter { $0 != nil }
@@ -52,7 +48,6 @@ class ViewController: UIViewController {
 
 extension ViewController: QueuePlayerDelegate {
     func playbackTimeDidChange(_ seconds: Float64) {
-//        print(seconds)
         slider.value = Float(seconds)
     }
     

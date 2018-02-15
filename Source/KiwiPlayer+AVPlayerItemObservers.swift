@@ -17,7 +17,7 @@ fileprivate let playbackBufferFullKey = "playbackBufferFull"
 fileprivate let playbackLoadedTimeRanges = "loadedTimeRanges"
 
 // MARK: - AVPlayerItem observers
-extension QueuePlayer {
+extension KiwiPlayer {
     
     internal func addPlayerItemObservers(_ playerItem: AVPlayerItem?) {
         guard let playerItem = playerItem else { return }
