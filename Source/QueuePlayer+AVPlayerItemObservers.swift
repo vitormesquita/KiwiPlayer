@@ -44,6 +44,8 @@ extension QueuePlayer {
     }
     
     @objc internal func playerItemDidPlayToEndTime(_ notification: Notification) {
+        timePassed += currentPlayer?.currentTime().seconds ?? 0
+        
         if let nextPlayer = nextPlayer {
             currentPlayer = nextPlayer
             currentItem = findNextElement(currentItem: currentItem)
@@ -63,7 +65,6 @@ extension QueuePlayer {
         guard let keyPath = keyPath, context == &playerItemContext else { return }
         
         if let item = object as? AVPlayerItem {
-            //            let urlString = (item.asset as? AVURLAsset)?.url.absoluteString
             
             if item.status == .failed {
                 playbackState = .failed
@@ -81,12 +82,6 @@ extension QueuePlayer {
                 bufferingState = .loaded
                 
             case playbackLoadedTimeRanges:
-                //print("buffer changed")
-                //let timeRanges = item.loadedTimeRanges
-                //if let timeRange = timeRanges.first?.timeRangeValue {
-                //let bufferedTime = CMTimeGetSeconds(CMTimeAdd(timeRange.start, timeRange.duration))
-                //print(bufferedTime)
-                //}
                 break
                 
             default:

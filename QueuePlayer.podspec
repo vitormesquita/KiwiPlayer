@@ -10,7 +10,6 @@ Pod::Spec.new do |s|
   s.name             = 'QueuePlayer'
   s.version          = '0.1.1'
   s.summary          = 'A cuple of code to help develop a new app'
-
   s.homepage         = 'https://github.com/vitormesquita/QueuePlayer'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Vitor mesquita' => 'vitor.mesquita09@gmail.com' }

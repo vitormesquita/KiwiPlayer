@@ -63,12 +63,12 @@
 		FCF29E7E2034C16E0020FA8B /* QueuePlayer */ = {
 			isa = PBXGroup;
 			children = (
-				FCF29E7F2034C16E0020FA8B /* AppDelegate.swift */,
-				FCF29E862034C16E0020FA8B /* Assets.xcassets */,
-				FCF29E882034C16E0020FA8B /* LaunchScreen.storyboard */,
-				FCF29E8B2034C16E0020FA8B /* Info.plist */,
 				FCE354AF2034E0AF0001ABB4 /* ViewController.swift */,
 				FCE354B02034E0AF0001ABB4 /* ViewController.xib */,
+				FCF29E7F2034C16E0020FA8B /* AppDelegate.swift */,
+				FCF29E882034C16E0020FA8B /* LaunchScreen.storyboard */,
+				FCF29E8B2034C16E0020FA8B /* Info.plist */,
+				FCF29E862034C16E0020FA8B /* Assets.xcassets */,
 			);
 			path = QueuePlayer;
 			sourceTree = "<group>";

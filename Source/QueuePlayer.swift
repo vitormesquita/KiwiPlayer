@@ -32,12 +32,32 @@ public enum PlaybackState {
 
 open class QueuePlayer: NSObject {
     
+    /// AVPlayerLayer to be inserted as `subLayer` in `UIView` as well as others views
+    /// It's important to set it's frame layer to be showed correctly
     public var playerLayer: AVPlayerLayer
+    
+    /// QueuePlayer's delegate to notify when change something
     public weak var delegate: QueuePlayerDelegate?
     
-    internal var playerItems: [AVPlayerItem] = []
+    /// Video queue
+    internal var itemsQueue: [AVPlayerItem] = []
+    
+    /// It's the next player that will raplace the `currentPlayer`
     internal var nextPlayer: AVPlayer?
     
+    internal var timeObserver: Any?
+    
+    /// It's the time duration of all played videos, it will be incremented on `playerItemDidPlayToEndTime`
+    internal var timePassed: Float64 = 0
+    
+    /// Current time of the current video being played by `currentPlayer`
+    internal var currentTime: Float64 = 0 {
+        didSet {
+            delegate?.playbackTimeDidChange(currentTime + timePassed)
+        }
+    }
+    
+    /// Represent current `AVPlayerItem` in `itemsQueue` and buffers the next video on `nextPlayer`
     internal var currentItem: AVPlayerItem? {
         didSet {
             if let item = findNextElement(currentItem: currentItem) {
@@ -48,6 +68,7 @@ open class QueuePlayer: NSObject {
         }
     }
     
+    /// It's the current `playerLayer`'s video player
     internal var currentPlayer: AVPlayer? {
         get {
             return playerLayer.player
@@ -65,19 +86,19 @@ open class QueuePlayer: NSObject {
         }
     }
     
+    ///
     internal var bufferingState: BufferingState = .unknown {
         didSet {
             delegate?.bufferingStateDidChange(bufferingState)
         }
     }
     
+    ///
     internal var playbackState: PlaybackState = .stopped {
         didSet {
             delegate?.playbackStateDidChange(playbackState)
         }
     }
-    
-    internal var timeObserver: Any?
     
     public override init() {
         playerLayer = AVPlayerLayer()
@@ -99,15 +120,15 @@ open class QueuePlayer: NSObject {
     internal func findNextElement(currentItem: AVPlayerItem?) -> AVPlayerItem? {
         guard let currentItem = currentItem else { return nil }
         
-        if let index = playerItems.index(of: currentItem), index + 1 < playerItems.count {
-            return playerItems[index + 1]
+        if let index = itemsQueue.index(of: currentItem), index + 1 < itemsQueue.count {
+            return itemsQueue[index + 1]
         }
         return nil
     }
     
     internal func setPlayerFromBeginning() {
-        currentItem = playerItems.first
-        currentPlayer = AVPlayer(playerItem: playerItems.first!.copy() as? AVPlayerItem)
+        currentItem = itemsQueue.first
+        currentPlayer = AVPlayer(playerItem: itemsQueue.first!.copy() as? AVPlayerItem)
         currentPlayer?.seek(to: kCMTimeZero)
     }
 }
@@ -115,17 +136,17 @@ open class QueuePlayer: NSObject {
 // MARK: - Public
 extension QueuePlayer {
     
-    /// Total duration from all videos
-    public var totalDuration: Float64 {
+    /// Total duration from all videos in seconds
+    public var totalDurationInSeconds: Float64 {
         get {
-            let totalTime = playerItems.reduce(kCMTimeZero) { (total, item) -> CMTime in
+            let totalTime = itemsQueue.reduce(kCMTimeZero) { (total, item) -> CMTime in
                 return CMTimeAdd(item.asset.duration, total)
             }
-            return CMTimeGetSeconds(totalTime)
+            return totalTime.seconds
         }
     }
     
-    /// Define volume to current video
+    /// Define the audio volume to current video
     public var volume: Float {
         get {
             return currentPlayer?.volume ?? 1
@@ -135,9 +156,9 @@ extension QueuePlayer {
         }
     }
     
-    ///TODO
+    /// Set the videos URLs in queue
     public func setVideosURL(_ videosURL: [URL]) {
-        playerItems = videosURL.map { AVURLAsset(url: $0) }.map { AVPlayerItem(asset: $0) }
+        itemsQueue = videosURL.map { AVURLAsset(url: $0) }.map { AVPlayerItem(asset: $0) }
     }
     
     /// Set `currentPlayer` with first item in queue
@@ -146,7 +167,7 @@ extension QueuePlayer {
         play()
     }
     
-    /// Play from current time and current video
+    /// Play current video
     public func play() {
         currentPlayer?.play()
         playbackState = .playing
@@ -160,7 +181,7 @@ extension QueuePlayer {
         playbackState = .paused
     }
     
-    /// Stop queue and come back to first video
+    /// Stop queue and come back to the first video
     public func stop() {
         guard playbackState != .stopped else { return }
         
@@ -169,21 +190,27 @@ extension QueuePlayer {
         playbackState = .stopped
     }
     
-    /// Seek to current video that correspond at second indicates as parameter and extract second to seek in video
+    /// Seek the video that corresponds to the seconds, passed as parameter, and finds out it's corresponding time (in seconds)
     public func seekTo(seconds: Float64) {
         
         var secondFormated = seconds
         var itemToSeek: AVPlayerItem?
         
-        searchItemLoop: for item in playerItems {
+        timePassed = 0
+        
+        searchItemLoop: for item in itemsQueue {
             let secondsFromItem = CMTimeGetSeconds(item.asset.duration)
             
             let result = (secondFormated - secondsFromItem)
             
             if result > 0 {
                 secondFormated = result
+                timePassed += secondsFromItem
+                
             } else {
                 itemToSeek = item
+                currentTime = secondFormated
+                
                 break searchItemLoop
             }
         }
@@ -194,7 +221,7 @@ extension QueuePlayer {
                 currentItem = itemToSeek
                 currentPlayer = AVPlayer(playerItem: itemToSeek.copy() as? AVPlayerItem)
             }
-            
+
             currentPlayer?.seek(to: CMTime(seconds: secondFormated, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale)))
             play()
         }

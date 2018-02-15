@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewController" customModule="QueuePlayer" customModuleProvider="target">
             <connections>
+                <outlet property="slider" destination="Y7a-Dt-b9C" id="pC3-XY-9R8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="Bc6-ab-eEl"/>
             </connections>
         </placeholder>
@@ -19,8 +20,22 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y7a-Dt-b9C">
+                    <rect key="frame" x="14" y="621" width="347" height="31"/>
+                    <connections>
+                        <action selector="sliderAction:" destination="-1" eventType="valueChanged" id="hUu-PO-NzL"/>
+                    </connections>
+                </slider>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Y7a-Dt-b9C" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="07R-5H-22y"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Y7a-Dt-b9C" secondAttribute="trailing" constant="16" id="PJC-KP-r8y"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Y7a-Dt-b9C" secondAttribute="bottom" constant="16" id="YkN-jG-wbg"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="-282" y="22"/>
         </view>
     </objects>
 </document>
