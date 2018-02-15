@@ -21,7 +21,7 @@
 /* Begin PBXFileReference section */
 		FCE354AF2034E0AF0001ABB4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FCE354B02034E0AF0001ABB4 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
-		FCF29E7C2034C16E0020FA8B /* QueuePlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QueuePlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCF29E7C2034C16E0020FA8B /* KiwiPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KiwiPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCF29E7F2034C16E0020FA8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FCF29E862034C16E0020FA8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FCF29E892034C16E0020FA8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,7 +47,7 @@
 			isa = PBXGroup;
 			children = (
 				FCF29E912034C1870020FA8B /* Source */,
-				FCF29E7E2034C16E0020FA8B /* QueuePlayer */,
+				FCF29E7E2034C16E0020FA8B /* KiwiPlayer */,
 				FCF29E7D2034C16E0020FA8B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,12 +55,12 @@
 		FCF29E7D2034C16E0020FA8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FCF29E7C2034C16E0020FA8B /* QueuePlayer.app */,
+				FCF29E7C2034C16E0020FA8B /* KiwiPlayer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FCF29E7E2034C16E0020FA8B /* QueuePlayer */ = {
+		FCF29E7E2034C16E0020FA8B /* KiwiPlayer */ = {
 			isa = PBXGroup;
 			children = (
 				FCE354AF2034E0AF0001ABB4 /* ViewController.swift */,
@@ -70,7 +70,7 @@
 				FCF29E8B2034C16E0020FA8B /* Info.plist */,
 				FCF29E862034C16E0020FA8B /* Assets.xcassets */,
 			);
-			path = QueuePlayer;
+			path = KiwiPlayer;
 			sourceTree = "<group>";
 		};
 		FCF29E912034C1870020FA8B /* Source */ = {
@@ -87,9 +87,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FCF29E7B2034C16E0020FA8B /* QueuePlayer */ = {
+		FCF29E7B2034C16E0020FA8B /* KiwiPlayer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FCF29E8E2034C16E0020FA8B /* Build configuration list for PBXNativeTarget "QueuePlayer" */;
+			buildConfigurationList = FCF29E8E2034C16E0020FA8B /* Build configuration list for PBXNativeTarget "KiwiPlayer" */;
 			buildPhases = (
 				FCF29E782034C16E0020FA8B /* Sources */,
 				FCF29E792034C16E0020FA8B /* Frameworks */,
@@ -99,9 +99,9 @@
 			);
 			dependencies = (
 			);
-			name = QueuePlayer;
+			name = KiwiPlayer;
 			productName = QueuePlayer;
-			productReference = FCF29E7C2034C16E0020FA8B /* QueuePlayer.app */;
+			productReference = FCF29E7C2034C16E0020FA8B /* KiwiPlayer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -120,7 +120,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FCF29E772034C16E0020FA8B /* Build configuration list for PBXProject "QueuePlayer" */;
+			buildConfigurationList = FCF29E772034C16E0020FA8B /* Build configuration list for PBXProject "KiwiPlayer" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -133,7 +133,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FCF29E7B2034C16E0020FA8B /* QueuePlayer */,
+				FCF29E7B2034C16E0020FA8B /* KiwiPlayer */,
 			);
 		};
 /* End PBXProject section */
@@ -291,9 +291,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = QueuePlayer/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/KiwiPlayer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = br.com.mesquita.QueuePlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = br.com.mesquita.KiwiPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -305,9 +305,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = QueuePlayer/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/KiwiPlayer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = br.com.mesquita.QueuePlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = br.com.mesquita.KiwiPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -317,7 +317,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FCF29E772034C16E0020FA8B /* Build configuration list for PBXProject "QueuePlayer" */ = {
+		FCF29E772034C16E0020FA8B /* Build configuration list for PBXProject "KiwiPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FCF29E8C2034C16E0020FA8B /* Debug */,
@@ -326,7 +326,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FCF29E8E2034C16E0020FA8B /* Build configuration list for PBXNativeTarget "QueuePlayer" */ = {
+		FCF29E8E2034C16E0020FA8B /* Build configuration list for PBXNativeTarget "KiwiPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FCF29E8F2034C16E0020FA8B /* Debug */,
