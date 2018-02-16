@@ -26,7 +26,7 @@ pod 'KiwiPlayer'
 ### Manually
 
 ```
-git clone https://github.com/vitormesquita/Malert.git
+git clone https://github.com/vitormesquita/KiwiPlayer.git
 ```
 
 Copy `Source` folder's classes (`.swift`) to your project. Just it!
