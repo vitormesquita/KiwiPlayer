@@ -1,4 +1,4 @@
-<img src="https://github.com/vitormesquita/KiwiPlayer/blob/master/Assets/kiwiplayer.png">
+<!--<img align="center" src="https://github.com/vitormesquita/KiwiPlayer/blob/master/Assets/kiwiplayer.png">-->
 
 # KiwiPlayer
 
