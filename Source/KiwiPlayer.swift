@@ -40,7 +40,7 @@ open class KiwiPlayer: NSObject {
     public weak var delegate: KiwiPlayerDelegate?
     
     /// QueuePlayer's mute action
-    var isMuted: Bool {
+    public var isMuted: Bool {
         get {
             return currentPlayer?.isMuted ?? false
         }
