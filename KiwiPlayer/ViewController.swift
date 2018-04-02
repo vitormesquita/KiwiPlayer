@@ -40,6 +40,10 @@ class ViewController: UIViewController {
     @IBAction func sliderAction(_ sender: Any) {
         queuePlayer.seekTo(seconds: Float64(slider.value))
     }
+    
+    @IBAction func muteButtonAction(_ sender: Any) {
+        queuePlayer.isMuted = !queuePlayer.isMuted
+    }
 }
 
 extension ViewController: KiwiPlayerDelegate {
@@ -58,6 +62,4 @@ extension ViewController: KiwiPlayerDelegate {
     func playbackQueueIsOver() {
         
     }
-    
-    
 }

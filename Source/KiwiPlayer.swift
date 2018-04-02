@@ -39,6 +39,18 @@ open class KiwiPlayer: NSObject {
     /// QueuePlayer's delegate to notify when change something
     public weak var delegate: KiwiPlayerDelegate?
     
+    /// QueuePlayer's mute action
+    var isMuted: Bool {
+        get {
+            return currentPlayer?.isMuted ?? false
+        }
+        set {
+            if let currentPlayer = currentPlayer {
+                currentPlayer.isMuted = newValue
+            }
+        }
+    }
+    
     /// Video queue
     internal var itemsQueue: [AVPlayerItem] = []
     
