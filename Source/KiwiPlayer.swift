@@ -40,13 +40,10 @@ open class KiwiPlayer: NSObject {
     public weak var delegate: KiwiPlayerDelegate?
     
     /// QueuePlayer's mute action
-    public var isMuted: Bool {
-        get {
-            return currentPlayer?.isMuted ?? false
-        }
-        set {
+    public var isMuted: Bool = false {
+        didSet {
             if let currentPlayer = currentPlayer {
-                currentPlayer.isMuted = newValue
+                currentPlayer.isMuted = isMuted
             }
         }
     }
@@ -91,6 +88,7 @@ open class KiwiPlayer: NSObject {
             
             newValue?.volume = volume
             newValue?.actionAtItemEnd = .pause
+            newValue?.isMuted = isMuted
             
             playerLayer.player = newValue
             
