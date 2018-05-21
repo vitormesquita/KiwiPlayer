@@ -7,15 +7,20 @@
 //
 
 import UIKit
+import AVKit
 
 class ViewController: UIViewController {
     
     @IBOutlet weak var slider: UISlider!
     
-    let urlString: [String] = ["http://techslides.com/demos/sample-videos/small.mp4"]
+    let urlString: [String] = [
+        "http://techslides.com/demos/sample-videos/small.mp4"
+    ]
 
     var items: [URL] = []
     var queuePlayer: KiwiPlayer = KiwiPlayer()
+    
+//    let routerPickerView = AVRoutePickerView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +35,13 @@ class ViewController: UIViewController {
         view.layer.addSublayer(queuePlayer.playerLayer)
         
         slider.maximumValue = Float(queuePlayer.totalDurationInSeconds)
+        
+//        routerPickerView.activeTintColor = .red
+//        routerPickerView.translatesAutoresizingMaskIntoConstraints = false
+//        self.view.addSubview(routerPickerView)
+//        routerPickerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40).isActive = true
+//        routerPickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        
     }
     
     override func viewDidLayoutSubviews() {

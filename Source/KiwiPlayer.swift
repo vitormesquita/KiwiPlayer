@@ -48,6 +48,15 @@ open class KiwiPlayer: NSObject {
         }
     }
     
+    public var enableExternalPlayback: Bool = false {
+        didSet {
+            if let currentPlayer = currentPlayer {
+                currentPlayer.allowsExternalPlayback = enableExternalPlayback
+                currentPlayer.usesExternalPlaybackWhileExternalScreenIsActive = enableExternalPlayback
+            }
+        }
+    }
+    
     /// Video queue
     internal var itemsQueue: [AVPlayerItem] = []
     
@@ -89,6 +98,8 @@ open class KiwiPlayer: NSObject {
             newValue?.volume = volume
             newValue?.actionAtItemEnd = .pause
             newValue?.isMuted = isMuted
+            newValue?.allowsExternalPlayback = enableExternalPlayback
+            newValue?.usesExternalPlaybackWhileExternalScreenIsActive = enableExternalPlayback
             
             playerLayer.player = newValue
             
