@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import MediaPlayer
 
 class ViewController: UIViewController {
     
@@ -20,7 +21,8 @@ class ViewController: UIViewController {
     var items: [URL] = []
     var queuePlayer: KiwiPlayer = KiwiPlayer()
     
-//    let routerPickerView = AVRoutePickerView()
+    let routerPickerView = AVRoutePickerView()
+    var isloaded = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,18 +32,27 @@ class ViewController: UIViewController {
             .map { $0! }
         
         queuePlayer.setVideosURL(items)
+        queuePlayer.enableExternalPlayback = true
         queuePlayer.delegate = self
-        queuePlayer.playFromBeginnig()
+        
         view.layer.addSublayer(queuePlayer.playerLayer)
         
         slider.maximumValue = Float(queuePlayer.totalDurationInSeconds)
         
-//        routerPickerView.activeTintColor = .red
-//        routerPickerView.translatesAutoresizingMaskIntoConstraints = false
-//        self.view.addSubview(routerPickerView)
-//        routerPickerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40).isActive = true
-//        routerPickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        routerPickerView.activeTintColor = .red
+        routerPickerView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(routerPickerView)
+        routerPickerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40).isActive = true
+        routerPickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        if !isloaded {
+            queuePlayer.playFromBeginnig()
+            isloaded = true
+        }
     }
     
     override func viewDidLayoutSubviews() {

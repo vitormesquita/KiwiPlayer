@@ -18,10 +18,6 @@ extension KiwiPlayer {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: .UIApplicationWillEnterForeground, object: UIApplication.shared)
     }
     
-    internal func removeApplicationObservers() {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     @objc internal func applicationWillResignActive(_ aNotification: Notification) {
         if playbackState == .playing {
             pause()

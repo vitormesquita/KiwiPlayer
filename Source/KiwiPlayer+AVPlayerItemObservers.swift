@@ -22,10 +22,10 @@ extension KiwiPlayer {
     internal func addPlayerItemObservers(_ playerItem: AVPlayerItem?) {
         guard let playerItem = playerItem else { return }
         
-        playerItem.addObserver(self, forKeyPath: playbackBufferEmptyKey, options: [.new, .old], context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackLikelyToKeepUpKey, options: [.new, .old], context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackBufferFullKey, options: [.new, .old], context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackLoadedTimeRanges, options: [.new, .old], context: &playerItemContext)
+        playerItem.addObserver(self, forKeyPath: playbackBufferEmptyKey, options: [] /*[.new, .old]*/, context: &playerItemContext)
+        playerItem.addObserver(self, forKeyPath: playbackLikelyToKeepUpKey, options: [] /*[.new, .old]*/, context: &playerItemContext)
+        playerItem.addObserver(self, forKeyPath: playbackBufferFullKey, options: [] /*[.new, .old]*/, context: &playerItemContext)
+        playerItem.addObserver(self, forKeyPath: playbackLoadedTimeRanges, options: [] /*[.new, .old]*/, context: &playerItemContext)
         
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidPlayToEndTime(_:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemFailedToPlayToEndTime(_:)), name: .AVPlayerItemFailedToPlayToEndTime, object: playerItem)
@@ -46,14 +46,19 @@ extension KiwiPlayer {
     @objc internal func playerItemDidPlayToEndTime(_ notification: Notification) {
         timePassed += currentPlayer?.currentTime().seconds ?? 0
         
+        guard let player = currentPlayer, let currentDuration = player.currentItem?.duration,
+            player.currentTime().seconds >= currentDuration.seconds else {
+                return
+        }
+        
         if let nextPlayer = nextPlayer {
             currentPlayer = nextPlayer
             currentItem = findNextElement(currentItem: currentItem)
-            
             play()
             
         } else {
             delegate?.playbackQueueIsOver()
+            stop()
         }
     }
     
@@ -73,16 +78,20 @@ extension KiwiPlayer {
             
             switch keyPath {
             case playbackBufferEmptyKey:
-                bufferingState = .delayed
+                if item.isPlaybackBufferEmpty {
+                    bufferingState = .delayed
+                }
                 
             case playbackLikelyToKeepUpKey:
+                if item.isPlaybackLikelyToKeepUp {
+                    bufferingState = .ready
+                }
+                
+            case playbackLoadedTimeRanges:
                 bufferingState = .ready
                 
             case playbackBufferFullKey:
                 bufferingState = .loaded
-                
-            case playbackLoadedTimeRanges:
-                break
                 
             default:
                 break

@@ -39,6 +39,15 @@ open class KiwiPlayer: NSObject {
     /// QueuePlayer's delegate to notify when change something
     public weak var delegate: KiwiPlayerDelegate?
     
+    /// Define the audio volume to current video
+    public var volume: Float = 1 {
+        didSet {
+            if let currentPlayer = currentPlayer {
+                currentPlayer.volume = volume
+            }
+        }
+    }
+    
     /// QueuePlayer's mute action
     public var isMuted: Bool = false {
         didSet {
@@ -47,7 +56,8 @@ open class KiwiPlayer: NSObject {
             }
         }
     }
-    
+
+    ///
     public var enableExternalPlayback: Bool = false {
         didSet {
             if let currentPlayer = currentPlayer {
@@ -131,7 +141,7 @@ open class KiwiPlayer: NSObject {
     }
     
     deinit {
-        removeApplicationObservers()
+        NotificationCenter.default.removeObserver(self)
         
         currentPlayer = nil
         currentItem = nil
@@ -149,7 +159,7 @@ open class KiwiPlayer: NSObject {
     
     internal func setPlayerFromBeginning() {
         currentItem = itemsQueue.first
-        currentPlayer = AVPlayer(playerItem: itemsQueue.first!.copy() as? AVPlayerItem)
+        currentPlayer = AVPlayer(playerItem: currentItem!.copy() as? AVPlayerItem)
         currentPlayer?.seek(to: kCMTimeZero)
     }
 }
@@ -164,16 +174,6 @@ extension KiwiPlayer {
                 return CMTimeAdd(item.asset.duration, total)
             }
             return totalTime.seconds
-        }
-    }
-    
-    /// Define the audio volume to current video
-    public var volume: Float {
-        get {
-            return currentPlayer?.volume ?? 1
-        }
-        set {
-            currentPlayer?.volume = newValue
         }
     }
     
