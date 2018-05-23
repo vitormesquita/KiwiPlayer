@@ -24,6 +24,8 @@ public enum BufferingState {
 }
 
 public enum PlaybackState {
+    case loading
+    case ready
     case playing
     case paused
     case stopped
@@ -134,9 +136,7 @@ open class KiwiPlayer: NSObject {
     
     public override init() {
         playerLayer = AVPlayerLayer()
-        
         super.init()
-        
         addApplicationObservers()
     }
     
@@ -158,6 +158,8 @@ open class KiwiPlayer: NSObject {
     }
     
     internal func setPlayerFromBeginning() {
+        guard !itemsQueue.isEmpty else { fatalError("You need to setVideosURL before try to play") }
+        
         currentItem = itemsQueue.first
         currentPlayer = AVPlayer(playerItem: currentItem!.copy() as? AVPlayerItem)
         currentPlayer?.seek(to: kCMTimeZero)
@@ -179,7 +181,14 @@ extension KiwiPlayer {
     
     /// Set the videos URLs in queue
     public func setVideosURL(_ videosURL: [URL]) {
-        itemsQueue = videosURL.map { AVURLAsset(url: $0) }.map { AVPlayerItem(asset: $0) }
+        playbackState = .loading
+        
+        for url in videosURL {
+            self.itemsQueue.append(AVPlayerItem(url: url))
+        }
+        
+        setPlayerFromBeginning()
+        playbackState = .ready
     }
     
     /// Set `currentPlayer` with first item in queue
@@ -190,7 +199,11 @@ extension KiwiPlayer {
     
     /// Play current video
     public func play() {
-        currentPlayer?.play()
+        guard let currentPlayer = currentPlayer, !itemsQueue.isEmpty else {
+            fatalError("You need to setVideosURL before try to play")
+        }
+        
+        currentPlayer.play()
         playbackState = .playing
     }
     
