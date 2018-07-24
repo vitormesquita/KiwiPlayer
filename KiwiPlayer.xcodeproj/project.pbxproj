@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC82AEC421066D31009C36FA /* KiwiPlayer+ObserveValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC82AEC321066D31009C36FA /* KiwiPlayer+ObserveValue.swift */; };
 		FCE354B12034E0AF0001ABB4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE354AF2034E0AF0001ABB4 /* ViewController.swift */; };
 		FCE354B22034E0AF0001ABB4 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE354B02034E0AF0001ABB4 /* ViewController.xib */; };
 		FCF29E802034C16E0020FA8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF29E7F2034C16E0020FA8B /* AppDelegate.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FC82AEC321066D31009C36FA /* KiwiPlayer+ObserveValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KiwiPlayer+ObserveValue.swift"; sourceTree = "<group>"; };
 		FCE354AF2034E0AF0001ABB4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FCE354B02034E0AF0001ABB4 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		FCF29E7C2034C16E0020FA8B /* KiwiPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KiwiPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,8 +80,9 @@
 			children = (
 				FCF29E922034C1970020FA8B /* KiwiPlayer.swift */,
 				FCF29E942034C1AE0020FA8B /* KiwiPlayer+AVPlayerObserver.swift */,
-				FCF29E962034C1BE0020FA8B /* KiwiPlayer+ApplicationObservers.swift */,
 				FCF29E982034C1D80020FA8B /* KiwiPlayer+AVPlayerItemObservers.swift */,
+				FCF29E962034C1BE0020FA8B /* KiwiPlayer+ApplicationObservers.swift */,
+				FC82AEC321066D31009C36FA /* KiwiPlayer+ObserveValue.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -158,6 +161,7 @@
 			files = (
 				FCE354B12034E0AF0001ABB4 /* ViewController.swift in Sources */,
 				FCF29E972034C1BE0020FA8B /* KiwiPlayer+ApplicationObservers.swift in Sources */,
+				FC82AEC421066D31009C36FA /* KiwiPlayer+ObserveValue.swift in Sources */,
 				FCF29E932034C1970020FA8B /* KiwiPlayer.swift in Sources */,
 				FCF29E992034C1D80020FA8B /* KiwiPlayer+AVPlayerItemObservers.swift in Sources */,
 				FCF29E952034C1AE0020FA8B /* KiwiPlayer+AVPlayerObserver.swift in Sources */,

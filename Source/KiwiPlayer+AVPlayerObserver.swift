@@ -9,21 +9,30 @@
 import UIKit
 import AVFoundation
 
+var playerContext = 1
+let externalPlaybackActive = "externalPlaybackActive"
+
 // MARK: - AVPlayer Observer
 extension KiwiPlayer {
     
     internal func addPlayerObserver(_ player: AVPlayer?) {
         guard let player = player else { return }
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 2), queue: DispatchQueue.main, using: {[weak self] (time) in
+        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 100), queue: DispatchQueue.main, using: {[weak self] (time) in
             guard let strongSelf = self else { return }
             strongSelf.currentTime = time.seconds
         })
+        
+        player.addObserver(self, forKeyPath: externalPlaybackActive, options: NSKeyValueObservingOptions.new, context: &playerContext)
     }
     
     internal func removePlayerObserver(_ player: AVPlayer?) {
-        if let timeObserver = timeObserver, let player = player {
+        guard let player = player else { return }
+        
+        if let timeObserver = timeObserver {
             player.removeTimeObserver(timeObserver)
+            self.timeObserver = nil
         }
+        
+        player.removeObserver(self, forKeyPath: externalPlaybackActive, context: &playerContext)
     }
 }
-

@@ -14,6 +14,15 @@ public protocol KiwiPlayerDelegate: class {
     func playbackStateDidChange(_ playerState: PlaybackState)
     func playbackTimeDidChange(_ seconds: Float64)
     func playbackQueueIsOver()
+    
+    func playbackExternalChanged(_ isActived: Bool)
+}
+
+extension KiwiPlayerDelegate {
+    
+    func playbackExternalChanged(_ isActived: Bool) {
+        // method optional
+    }
 }
 
 public enum BufferingState {
@@ -58,13 +67,12 @@ open class KiwiPlayer: NSObject {
             }
         }
     }
-
+    
     ///
     public var enableExternalPlayback: Bool = false {
         didSet {
             if let currentPlayer = currentPlayer {
                 currentPlayer.allowsExternalPlayback = enableExternalPlayback
-                currentPlayer.usesExternalPlaybackWhileExternalScreenIsActive = enableExternalPlayback
             }
         }
     }
@@ -104,19 +112,20 @@ open class KiwiPlayer: NSObject {
             return playerLayer.player
         }
         set {
-            playerItemRemoveObservers(playerLayer.player?.currentItem)
-            removePlayerObserver(playerLayer.player)
+            if let player = playerLayer.player {
+                playerItemRemoveObservers(player.currentItem)
+                removePlayerObserver(player)
+            }
             
             newValue?.volume = volume
             newValue?.actionAtItemEnd = .pause
             newValue?.isMuted = isMuted
             newValue?.allowsExternalPlayback = enableExternalPlayback
-            newValue?.usesExternalPlaybackWhileExternalScreenIsActive = enableExternalPlayback
             
             playerLayer.player = newValue
             
-            addPlayerObserver(newValue)
-            addPlayerItemObservers(newValue?.currentItem)
+            addPlayerObserver(playerLayer.player)
+            addPlayerItemObservers(playerLayer.player?.currentItem)
         }
     }
     
@@ -193,7 +202,9 @@ extension KiwiPlayer {
     
     /// Set `currentPlayer` with first item in queue
     public func playFromBeginnig() {
-        setPlayerFromBeginning()
+        if currentItem != itemsQueue.first {
+            setPlayerFromBeginning()
+        }
         play()
     }
     

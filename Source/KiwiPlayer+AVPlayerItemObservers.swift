@@ -9,12 +9,12 @@
 import UIKit
 import AVFoundation
 
-fileprivate var playerItemContext = 0
+var playerItemContext = 0
 
-fileprivate let playbackBufferEmptyKey = "playbackBufferEmpty"
-fileprivate let playbackLikelyToKeepUpKey = "playbackLikelyToKeepUp"
-fileprivate let playbackBufferFullKey = "playbackBufferFull"
-fileprivate let playbackLoadedTimeRanges = "loadedTimeRanges"
+let playbackBufferEmptyKey = "playbackBufferEmpty"
+let playbackLikelyToKeepUpKey = "playbackLikelyToKeepUp"
+let playbackBufferFullKey = "playbackBufferFull"
+let playbackLoadedTimeRanges = "loadedTimeRanges"
 
 // MARK: - AVPlayerItem observers
 extension KiwiPlayer {
@@ -22,10 +22,10 @@ extension KiwiPlayer {
     internal func addPlayerItemObservers(_ playerItem: AVPlayerItem?) {
         guard let playerItem = playerItem else { return }
         
-        playerItem.addObserver(self, forKeyPath: playbackBufferEmptyKey, options: [] /*[.new, .old]*/, context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackLikelyToKeepUpKey, options: [] /*[.new, .old]*/, context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackBufferFullKey, options: [] /*[.new, .old]*/, context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackLoadedTimeRanges, options: [] /*[.new, .old]*/, context: &playerItemContext)
+        playerItem.addObserver(self, forKeyPath: playbackBufferEmptyKey, options: [.new, .old], context: &playerItemContext)
+        playerItem.addObserver(self, forKeyPath: playbackLikelyToKeepUpKey, options: [.new, .old], context: &playerItemContext)
+        playerItem.addObserver(self, forKeyPath: playbackBufferFullKey, options: [.new, .old], context: &playerItemContext)
+        playerItem.addObserver(self, forKeyPath: playbackLoadedTimeRanges, options: [.new, .old], context: &playerItemContext)
         
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidPlayToEndTime(_:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemFailedToPlayToEndTime(_:)), name: .AVPlayerItemFailedToPlayToEndTime, object: playerItem)
@@ -46,57 +46,20 @@ extension KiwiPlayer {
     @objc internal func playerItemDidPlayToEndTime(_ notification: Notification) {
         timePassed += currentPlayer?.currentTime().seconds ?? 0
         
-        guard let player = currentPlayer, let currentDuration = player.currentItem?.duration,
-            player.currentTime().seconds >= currentDuration.seconds else {
-                return
-        }
-        
         if let nextPlayer = nextPlayer {
             currentPlayer = nextPlayer
-            currentItem = findNextElement(currentItem: currentItem)
             play()
             
+            currentItem = findNextElement(currentItem: currentItem)
+            
         } else {
-            delegate?.playbackQueueIsOver()
             stop()
+            delegate?.playbackQueueIsOver()
         }
     }
     
     @objc internal func playerItemFailedToPlayToEndTime(_ notification: Notification) {
         playbackState = .failed
-    }
-    
-    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let keyPath = keyPath, context == &playerItemContext else { return }
-        
-        if let item = object as? AVPlayerItem {
-            
-            if item.status == .failed {
-                playbackState = .failed
-                return
-            }
-            
-            switch keyPath {
-            case playbackBufferEmptyKey:
-                if item.isPlaybackBufferEmpty {
-                    bufferingState = .delayed
-                }
-                
-            case playbackLikelyToKeepUpKey:
-                if item.isPlaybackLikelyToKeepUp {
-                    bufferingState = .ready
-                }
-                
-            case playbackLoadedTimeRanges:
-                bufferingState = .ready
-                
-            case playbackBufferFullKey:
-                bufferingState = .loaded
-                
-            default:
-                break
-            }
-        }
     }
 }
 

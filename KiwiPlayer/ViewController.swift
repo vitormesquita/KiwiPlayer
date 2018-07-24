@@ -15,12 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var slider: UISlider!
     
     let urlString: [String] = [
-        "http://techslides.com/demos/sample-videos/small.mp4",
-        "http://player.vimeo.com/external/248598659.sd.mp4?s=8c65501f9c0fa68dad822b5e01fbae13fdefbe99&profile_id=165&oauth2_token_id=1029745847",
-        "http://player.vimeo.com/external/254938108.sd.mp4?s=0ea1dcf09bb82c8a3961044ddcb6af0b203f46ad&profile_id=164&oauth2_token_id=1029745847",
-        "http://player.vimeo.com/external/254937501.hd.mp4?s=3029bbe710bc23a888f00b1dc68aab95fd161fa7&profile_id=175&oauth2_token_id=1029745847",
-        "http://player.vimeo.com/external/254937438.hd.mp4?s=3270a2915b362a59e681b50e62c89f0e811ecbd9&profile_id=175&oauth2_token_id=1029745847",
-        "http://player.vimeo.com/external/248599675.sd.mp4?s=41a30b1601356596a20c6c1cf3945caec816a08c&profile_id=164&oauth2_token_id=1029745847"
+        "http://techslides.com/demos/sample-videos/small.mp4"
     ]
 
     var items: [URL] = []
@@ -40,7 +35,7 @@ class ViewController: UIViewController {
         queuePlayer.enableExternalPlayback = true
         queuePlayer.delegate = self
         
-        view.layer.addSublayer(queuePlayer.playerLayer)
+        view.layer.insertSublayer(queuePlayer.playerLayer, at: 0)
         
         slider.maximumValue = Float(queuePlayer.totalDurationInSeconds)
         
@@ -77,6 +72,7 @@ class ViewController: UIViewController {
 extension ViewController: KiwiPlayerDelegate {
     func playbackTimeDidChange(_ seconds: Float64) {
         slider.value = Float(seconds)
+        print(seconds)
     }
     
     func bufferingStateDidChange(_ bufferState: BufferingState) {
@@ -89,5 +85,8 @@ extension ViewController: KiwiPlayerDelegate {
     
     func playbackQueueIsOver() {
         
+    }
+    
+    func playbackExternalChanged(_ isActived: Bool) {
     }
 }
