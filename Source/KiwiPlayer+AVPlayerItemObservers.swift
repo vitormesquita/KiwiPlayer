@@ -44,13 +44,11 @@ extension KiwiPlayer {
     }
     
     @objc internal func playerItemDidPlayToEndTime(_ notification: Notification) {
-        timePassed += currentPlayer?.currentTime().seconds ?? 0
+        timePassed += currentPlayer.currentTime().seconds
         
-        if let nextPlayer = nextPlayer {
-            currentPlayer = nextPlayer
+        if let nextItem = nextItem {
+            currentItem = nextItem
             play()
-            
-            currentItem = findNextElement(currentItem: currentItem)
             
         } else {
             stop()
@@ -62,4 +60,3 @@ extension KiwiPlayer {
         playbackState = .failed
     }
 }
-

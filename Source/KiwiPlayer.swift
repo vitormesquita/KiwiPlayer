@@ -18,10 +18,10 @@ public protocol KiwiPlayerDelegate: class {
     func playbackExternalChanged(_ isActived: Bool)
 }
 
-extension KiwiPlayerDelegate {
+public extension KiwiPlayerDelegate {
     
     func playbackExternalChanged(_ isActived: Bool) {
-        // method optional
+        // optional method
     }
 }
 
@@ -50,40 +50,11 @@ open class KiwiPlayer: NSObject {
     /// QueuePlayer's delegate to notify when change something
     public weak var delegate: KiwiPlayerDelegate?
     
-    /// Define the audio volume to current video
-    public var volume: Float = 1 {
-        didSet {
-            if let currentPlayer = currentPlayer {
-                currentPlayer.volume = volume
-            }
-        }
-    }
-    
-    /// QueuePlayer's mute action
-    public var isMuted: Bool = false {
-        didSet {
-            if let currentPlayer = currentPlayer {
-                currentPlayer.isMuted = isMuted
-            }
-        }
-    }
-    
-    ///
-    public var enableExternalPlayback: Bool = false {
-        didSet {
-            if let currentPlayer = currentPlayer {
-                currentPlayer.allowsExternalPlayback = enableExternalPlayback
-            }
-        }
-    }
+    /// It's the current `playerLayer`'s video player
+    internal var currentPlayer: AVPlayer
     
     /// Video queue
     internal var itemsQueue: [AVPlayerItem] = []
-    
-    /// It's the next player that will raplace the `currentPlayer`
-    internal var nextPlayer: AVPlayer?
-    
-    internal var timeObserver: Any?
     
     /// It's the time duration of all played videos, it will be incremented on `playerItemDidPlayToEndTime`
     internal var timePassed: Float64 = 0
@@ -95,64 +66,52 @@ open class KiwiPlayer: NSObject {
         }
     }
     
+    /// It's the next item that will raplace the `currentItem` on player
+    internal var nextItem: AVPlayerItem?
+    
     /// Represent current `AVPlayerItem` in `itemsQueue` and buffers the next video on `nextPlayer`
     internal var currentItem: AVPlayerItem? {
         didSet {
-            if let item = findNextElement(currentItem: currentItem) {
-                self.nextPlayer = AVPlayer(playerItem: item.copy() as? AVPlayerItem)
-            } else {
-                self.nextPlayer = nil
+            if let oldItem = oldValue {
+                playerItemRemoveObservers(oldItem)
             }
+            
+            self.nextItem = findNextElement(currentItem: currentItem)
+            addPlayerItemObservers(currentItem)
+            replaceCurrentItem(currentItem)
         }
     }
     
-    /// It's the current `playerLayer`'s video player
-    internal var currentPlayer: AVPlayer? {
-        get {
-            return playerLayer.player
-        }
-        set {
-            if let player = playerLayer.player {
-                playerItemRemoveObservers(player.currentItem)
-                removePlayerObserver(player)
-            }
-            
-            newValue?.volume = volume
-            newValue?.actionAtItemEnd = .pause
-            newValue?.isMuted = isMuted
-            newValue?.allowsExternalPlayback = enableExternalPlayback
-            
-            playerLayer.player = newValue
-            
-            addPlayerObserver(playerLayer.player)
-            addPlayerItemObservers(playerLayer.player?.currentItem)
-        }
-    }
-    
-    ///
+    /// Define buffering state from `currentItem`
     internal var bufferingState: BufferingState = .unknown {
         didSet {
             delegate?.bufferingStateDidChange(bufferingState)
         }
     }
     
-    ///
+    /// Definie playback state from `currentItem`
     internal var playbackState: PlaybackState = .stopped {
         didSet {
             delegate?.playbackStateDidChange(playbackState)
         }
     }
     
+    internal var timeObserver: Any?
+    
     public override init() {
         playerLayer = AVPlayerLayer()
+        currentPlayer = AVPlayer()
         super.init()
+        
+        addPlayerObserver()
         addApplicationObservers()
+        self.playerLayer.player = currentPlayer
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        removePlayerObserver()
         
-        currentPlayer = nil
         currentItem = nil
         delegate = nil
     }
@@ -170,8 +129,13 @@ open class KiwiPlayer: NSObject {
         guard !itemsQueue.isEmpty else { fatalError("You need to setVideosURL before try to play") }
         
         currentItem = itemsQueue.first
-        currentPlayer = AVPlayer(playerItem: currentItem!.copy() as? AVPlayerItem)
-        currentPlayer?.seek(to: kCMTimeZero)
+        currentPlayer.replaceCurrentItem(with: currentItem)
+        currentPlayer.seek(to: kCMTimeZero)
+    }
+    
+    internal func replaceCurrentItem(_ item: AVPlayerItem?) {
+        currentPlayer.seek(to: kCMTimeZero)
+        currentPlayer.replaceCurrentItem(with: item)
     }
 }
 
@@ -193,7 +157,9 @@ extension KiwiPlayer {
         playbackState = .loading
         
         for url in videosURL {
-            self.itemsQueue.append(AVPlayerItem(url: url))
+            let asset = AVURLAsset(url: url, options: .none)
+            let item = AVPlayerItem(asset: asset)
+            self.itemsQueue.append(item)
         }
         
         setPlayerFromBeginning()
@@ -210,7 +176,7 @@ extension KiwiPlayer {
     
     /// Play current video
     public func play() {
-        guard let currentPlayer = currentPlayer, !itemsQueue.isEmpty else {
+        guard !itemsQueue.isEmpty else {
             fatalError("You need to setVideosURL before try to play")
         }
         
@@ -222,7 +188,7 @@ extension KiwiPlayer {
     public func pause() {
         guard playbackState == .playing else { return }
         
-        currentPlayer?.pause()
+        currentPlayer.pause()
         playbackState = .paused
     }
     
@@ -230,7 +196,7 @@ extension KiwiPlayer {
     public func stop() {
         guard playbackState != .stopped else { return }
         
-        currentPlayer?.pause()
+        currentPlayer.pause()
         setPlayerFromBeginning()
         playbackState = .stopped
     }
@@ -264,12 +230,31 @@ extension KiwiPlayer {
             
             if itemToSeek != currentItem {
                 currentItem = itemToSeek
-                currentPlayer = AVPlayer(playerItem: itemToSeek.copy() as? AVPlayerItem)
             }
-
-            currentPlayer?.seek(to: CMTime(seconds: secondFormated, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale)))
+            
+            currentPlayer.seek(to: CMTime(seconds: secondFormated, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale)))
             play()
         }
     }
 }
 
+extension KiwiPlayer {
+    
+    /// Define the audio volume to current video
+    public var volume: Float {
+        get { return currentPlayer.volume }
+        set { currentPlayer.volume = newValue }
+    }
+    
+    /// QueuePlayer's mute action
+    public var isMuted: Bool {
+        get { return currentPlayer.isMuted }
+        set { currentPlayer.isMuted = newValue }
+    }
+    
+    /// Enable player run with AirPlay connection
+    public var enableExternalPlayback: Bool {
+        get { return currentPlayer.allowsExternalPlayback }
+        set { currentPlayer.allowsExternalPlayback = newValue }
+    }
+}
