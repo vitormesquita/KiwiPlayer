@@ -16,20 +16,20 @@ let externalPlaybackActive = "externalPlaybackActive"
 extension KiwiPlayer {
     
     internal func addPlayerObserver() {
-        timeObserver = currentPlayer.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 100), queue: DispatchQueue.main, using: {[weak self] (time) in
+        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 100), queue: DispatchQueue.main, using: {[weak self] (time) in
             guard let strongSelf = self else { return }
             strongSelf.currentTime = time.seconds
         })
         
-        currentPlayer.addObserver(self, forKeyPath: externalPlaybackActive, options: NSKeyValueObservingOptions.new, context: &playerContext)
+        player.addObserver(self, forKeyPath: externalPlaybackActive, options: [.new, .old], context: &playerContext)
     }
     
     internal func removePlayerObserver() {
         if let timeObserver = timeObserver {
-            currentPlayer.removeTimeObserver(timeObserver)
+            player.removeTimeObserver(timeObserver)
             self.timeObserver = nil
         }
         
-        currentPlayer.removeObserver(self, forKeyPath: externalPlaybackActive, context: &playerContext)
+        player.removeObserver(self, forKeyPath: externalPlaybackActive, context: &playerContext)
     }
 }

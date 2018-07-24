@@ -19,7 +19,7 @@ extension KiwiPlayer {
     }
     
     @objc internal func applicationWillResignActive(_ aNotification: Notification) {
-        if playbackState == .playing {
+        if playbackState == .playing && pauseWhenResigningActive {
             pause()
         }
     }
@@ -31,7 +31,7 @@ extension KiwiPlayer {
     }
     
     @objc internal func applicationDidEnterBackground(_ aNotification: Notification) {
-        if playbackState == .playing {
+        if playbackState == .playing && pauseWhenEnterBackground {
             pause()
         }
     }

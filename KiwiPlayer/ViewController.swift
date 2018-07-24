@@ -77,7 +77,6 @@ class ViewController: UIViewController {
 extension ViewController: KiwiPlayerDelegate {
     func playbackTimeDidChange(_ seconds: Float64) {
         slider.value = Float(seconds)
-        print(seconds)
     }
     
     func bufferingStateDidChange(_ bufferState: BufferingState) {

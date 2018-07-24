@@ -16,8 +16,9 @@ extension KiwiPlayer {
         
         if let item = object as? AVPlayerItem, context == &playerItemContext {
             
-            if item.status == .failed {
+            if item.status == .failed && !player.isExternalPlaybackActive {
                 playbackState = .failed
+                print("deu erro")
                 return
             }
             
