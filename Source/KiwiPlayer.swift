@@ -56,6 +56,9 @@ open class KiwiPlayer: NSObject {
     /// Pause player automatically when app enter in background.
     public var pauseWhenEnterBackground: Bool = true
     
+    /// Play automatically when app enter in foreground
+    public var playWhenEnterForeground: Bool = true
+    
     /// It's the `playerLayer`'s video player
     internal var player: AVPlayer
     

@@ -25,7 +25,7 @@ extension KiwiPlayer {
     }
     
     @objc internal func applicationDidBecomeActive(_ aNotification: Notification) {
-        if playbackState != .playing {
+        if playbackState != .playing && playWhenEnterForeground {
             play()
         }
     }
@@ -37,7 +37,7 @@ extension KiwiPlayer {
     }
     
     @objc internal func applicationWillEnterForeground(_ aNoticiation: Notification) {
-        if playbackState != .playing {
+        if playbackState != .playing && playWhenEnterForeground {
             play()
         }
     }
