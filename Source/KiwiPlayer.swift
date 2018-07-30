@@ -138,7 +138,6 @@ open class KiwiPlayer: NSObject {
         guard !itemsQueue.isEmpty else { fatalError("You need to setVideosURL before try to play") }
         
         currentItem = itemsQueue.first
-        player.replaceCurrentItem(with: currentItem)
         player.seek(to: kCMTimeZero)
     }
     
@@ -188,6 +187,10 @@ extension KiwiPlayer {
             fatalError("You need to setVideosURL before try to play")
         }
         
+        if playbackState == .stopped {
+            setPlayerFromBeginning()
+        }
+ 
         player.play()
         playbackState = .playing
     }
@@ -204,8 +207,7 @@ extension KiwiPlayer {
     public func stop() {
         guard playbackState != .stopped else { return }
         
-        player.pause()
-        setPlayerFromBeginning()
+        player.replaceCurrentItem(with: nil)
         playbackState = .stopped
     }
     

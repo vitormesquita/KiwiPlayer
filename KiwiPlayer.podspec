@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KiwiPlayer'
-  s.version          = '0.2.3'
+  s.version          = '0.2.4'
   s.summary          = 'Kiwi Player allows you go forward and go back in videos easily! 💃'
   s.homepage         = 'https://github.com/vitormesquita/KiwiPlayer'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
