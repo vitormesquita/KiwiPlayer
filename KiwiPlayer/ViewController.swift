@@ -10,15 +10,22 @@ import UIKit
 import AVKit
 import MediaPlayer
 
+struct Time {
+    let hours: Int
+    let minutes: Int
+    let seconds: Int
+}
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var slider: UISlider!
+    @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var maxTimeLabel: UILabel!
     
     let urlString: [String] = [
-        "http://techslides.com/demos/sample-videos/small.mp4",
         "http://player.vimeo.com/external/248598659.sd.mp4?s=8c65501f9c0fa68dad822b5e01fbae13fdefbe99&profile_id=165&oauth2_token_id=1029745847",
         "http://player.vimeo.com/external/254938108.sd.mp4?s=0ea1dcf09bb82c8a3961044ddcb6af0b203f46ad&profile_id=164&oauth2_token_id=1029745847",
-        "http://player.vimeo.com/external/254937501.hd.mp4?s=3029bbe710bc23a888f00b1dc68aab95fd161fa7&profile_id=175&oauth2_token_id=1029745847",
+        "http://player.vimeo.com/external/249347540.sd.mp4?s=1ea7c950db8d0cfbdc9549a5a519c884b8bf9adb&profile_id=164&oauth2_token_id=1029745847",
         "http://player.vimeo.com/external/254937438.hd.mp4?s=3270a2915b362a59e681b50e62c89f0e811ecbd9&profile_id=175&oauth2_token_id=1029745847",
         "http://player.vimeo.com/external/248599675.sd.mp4?s=41a30b1601356596a20c6c1cf3945caec816a08c&profile_id=164&oauth2_token_id=1029745847"
     ]
@@ -49,6 +56,8 @@ class ViewController: UIViewController {
         self.view.addSubview(routerPickerView)
         routerPickerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40).isActive = true
         routerPickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        
+        slider.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -65,18 +74,43 @@ class ViewController: UIViewController {
         queuePlayer.playerLayer.frame = view.frame
     }
     
-    @IBAction func sliderAction(_ sender: Any) {
-        queuePlayer.seekTo(seconds: Float64(slider.value))
+    @objc private func onSliderValChanged(slider: UISlider, event: UIEvent) {
+        if let touchEvent = event.allTouches?.first {
+            switch touchEvent.phase {
+            case .began:
+                break
+                
+            case .ended:
+                queuePlayer.seekTo(seconds: Double(slider.value))
+                
+            default:
+                break
+            }
+        }
     }
     
     @IBAction func muteButtonAction(_ sender: Any) {
         queuePlayer.isMuted = !queuePlayer.isMuted
     }
+    
+     func secondsToHoursMinutesSeconds(seconds: Int) -> Time {
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
+        let seconds = (seconds % 3600) % 60
+        return Time(hours: hours, minutes: minutes, seconds: seconds)
+    }
 }
 
 extension ViewController: KiwiPlayerDelegate {
-    func playbackTimeDidChange(_ seconds: Float64) {
+    func playbackTimeDidChange(_ seconds: Double) {
         slider.value = Float(seconds)
+        
+        let time = secondsToHoursMinutesSeconds(seconds: Int(seconds))
+        if time.hours > 0 {
+            currentTimeLabel.text = String(format: "%02d:%02d:%02d", time.hours, time.minutes, time.seconds)
+        } else {
+            currentTimeLabel.text = String(format: "%02d:%02d", time.minutes, time.seconds)
+        }
     }
     
     func bufferingStateDidChange(_ bufferState: BufferingState) {

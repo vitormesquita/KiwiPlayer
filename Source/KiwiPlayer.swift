@@ -12,7 +12,7 @@ import AVFoundation
 public protocol KiwiPlayerDelegate: class {
     func bufferingStateDidChange(_ bufferState: BufferingState)
     func playbackStateDidChange(_ playerState: PlaybackState)
-    func playbackTimeDidChange(_ seconds: Float64)
+    func playbackTimeDidChange(_ seconds: Double)
     func playbackQueueIsOver()
     
     func playbackExternalChanged(_ isActived: Bool)
@@ -66,14 +66,18 @@ open class KiwiPlayer: NSObject {
     internal var itemsQueue: [AVPlayerItem] = []
     
     /// It's the time duration of all played videos, it will be incremented on `playerItemDidPlayToEndTime`
-    internal var timePassed: Float64 = 0
+    internal var timePassed: Double = 0
     
     /// Current time of the current video being played by `currentPlayer`
-    internal var currentTime: Float64 = 0 {
+    internal var currentTime: Double = 0 {
         didSet {
-            delegate?.playbackTimeDidChange(currentTime + timePassed)
+            let total = currentTime + timePassed
+            delegate?.playbackTimeDidChange(total)
         }
     }
+    
+    /// Workaround to represents the exactly time to seek when is connecting whit AirPlay
+    internal var timeDelayedExternal: Double = 0
     
     /// It's the next item that will raplace the `currentItem` on player
     internal var nextItem: AVPlayerItem?
@@ -212,26 +216,25 @@ extension KiwiPlayer {
     }
     
     /// Seek the video that corresponds to the seconds, passed as parameter, and finds out it's corresponding time (in seconds)
-    public func seekTo(seconds: Float64) {
-        
+    public func seekTo(seconds: Double) {
         var secondFormated = seconds
         var itemToSeek: AVPlayerItem?
         
         timePassed = 0
         
         searchItemLoop: for item in itemsQueue {
-            let secondsFromItem = CMTimeGetSeconds(item.asset.duration)
+            let secondsFromItem = item.asset.duration.seconds
             
             let result = (secondFormated - secondsFromItem)
             
-            if result > 0 {
+            if result >= 0 {
                 secondFormated = result
                 timePassed += secondsFromItem
                 
             } else {
                 itemToSeek = item
                 currentTime = secondFormated
-                
+                timeDelayedExternal = secondFormated
                 break searchItemLoop
             }
         }

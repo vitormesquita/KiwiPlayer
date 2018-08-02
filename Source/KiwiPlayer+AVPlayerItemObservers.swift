@@ -44,13 +44,12 @@ extension KiwiPlayer {
     }
     
     @objc internal func playerItemDidPlayToEndTime(_ notification: Notification) {
-        timePassed += player.currentTime().seconds
+        timePassed += currentItem?.asset.duration.seconds ?? 0
         
         if let nextItem = nextItem {
             currentItem = nextItem
             
-            player.seek(to: kCMTimeZero)
-            play()
+//            player.seek(to: kCMTimeZero)
             
         } else {
             stop()

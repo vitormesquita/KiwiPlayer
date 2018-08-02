@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewController" customModule="KiwiPlayer" customModuleProvider="target">
             <connections>
+                <outlet property="currentTimeLabel" destination="gbF-5S-kSZ" id="JVV-xD-FvZ"/>
+                <outlet property="maxTimeLabel" destination="sLK-7C-yr9" id="Gsw-ND-Cbp"/>
                 <outlet property="slider" destination="Y7a-Dt-b9C" id="pC3-XY-9R8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="Bc6-ab-eEl"/>
             </connections>
@@ -22,10 +24,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y7a-Dt-b9C">
-                    <rect key="frame" x="14" y="621" width="347" height="31"/>
-                    <connections>
-                        <action selector="sliderAction:" destination="-1" eventType="valueChanged" id="hUu-PO-NzL"/>
-                    </connections>
+                    <rect key="frame" x="64" y="621" width="247" height="31"/>
                 </slider>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X4v-XV-vhw">
                     <rect key="frame" x="16" y="36" width="46" height="30"/>
@@ -34,17 +33,33 @@
                         <action selector="muteButtonAction:" destination="-1" eventType="touchUpInside" id="sdW-yL-NTl"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbF-5S-kSZ">
+                    <rect key="frame" x="16" y="626" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sLK-7C-yr9">
+                    <rect key="frame" x="317" y="625" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Y7a-Dt-b9C" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="07R-5H-22y"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Y7a-Dt-b9C" secondAttribute="trailing" constant="16" id="PJC-KP-r8y"/>
+                <constraint firstItem="sLK-7C-yr9" firstAttribute="leading" secondItem="Y7a-Dt-b9C" secondAttribute="trailing" constant="8" id="J7P-oT-wcq"/>
+                <constraint firstItem="sLK-7C-yr9" firstAttribute="centerY" secondItem="Y7a-Dt-b9C" secondAttribute="centerY" id="PIc-fn-wH3"/>
+                <constraint firstItem="Y7a-Dt-b9C" firstAttribute="leading" secondItem="gbF-5S-kSZ" secondAttribute="trailing" constant="8" id="XTN-N7-CKD"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Y7a-Dt-b9C" secondAttribute="bottom" constant="16" id="YkN-jG-wbg"/>
                 <constraint firstItem="X4v-XV-vhw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Ynz-vt-wrK"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="sLK-7C-yr9" secondAttribute="trailing" constant="16" id="gN4-v8-4Na"/>
+                <constraint firstItem="gbF-5S-kSZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="hYL-BH-0UQ"/>
+                <constraint firstItem="gbF-5S-kSZ" firstAttribute="centerY" secondItem="Y7a-Dt-b9C" secondAttribute="centerY" id="rK4-8G-Whq"/>
                 <constraint firstItem="X4v-XV-vhw" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="v1G-yT-nVQ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="-282" y="22"/>
+            <point key="canvasLocation" x="-282.5" y="21.5"/>
         </view>
     </objects>
 </document>

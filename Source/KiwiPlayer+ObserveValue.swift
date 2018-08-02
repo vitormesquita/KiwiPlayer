@@ -18,7 +18,6 @@ extension KiwiPlayer {
             
             if item.status == .failed && !player.isExternalPlaybackActive {
                 playbackState = .failed
-                print("deu erro")
                 return
             }
             

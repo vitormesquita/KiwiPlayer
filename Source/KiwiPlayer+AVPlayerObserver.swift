@@ -16,9 +16,24 @@ let externalPlaybackActive = "externalPlaybackActive"
 extension KiwiPlayer {
     
     internal func addPlayerObserver() {
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 100), queue: DispatchQueue.main, using: {[weak self] (time) in
+        let interval = CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        
+        timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: {[weak self] (time) in
             guard let strongSelf = self else { return }
-            strongSelf.currentTime = time.seconds
+            if strongSelf.player.currentItem?.status == .readyToPlay {
+                
+                // MARK: - Workaround for AirPlay connection cause `addPeriodicTimeObserver` was not returning the correct time :(
+                if time.seconds < strongSelf.timeDelayedExternal && strongSelf.timeDelayedExternal != 0 && strongSelf.player.isExternalPlaybackActive {
+                    let time = CMTime(seconds: strongSelf.timeDelayedExternal, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale))
+                    strongSelf.player.seek(to: time)
+                    strongSelf.timeDelayedExternal = 0
+                    
+                } else {
+                    strongSelf.currentTime = time.seconds
+                }
+                
+                print(strongSelf.currentTime)
+            }
         })
         
         player.addObserver(self, forKeyPath: externalPlaybackActive, options: [.new, .old], context: &playerContext)
