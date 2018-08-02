@@ -242,8 +242,10 @@ extension KiwiPlayer {
                 currentItem = itemToSeek
             }
             
-            player.seek(to: CMTime(seconds: secondFormated, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale)))
-            play()
+            player.seek(to: CMTime(seconds: secondFormated, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale))) {[weak self] (finished) in
+                guard let strongSelf = self else { return }
+                strongSelf.play()
+            }
         }
     }
 }
