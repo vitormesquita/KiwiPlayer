@@ -21,18 +21,7 @@ extension KiwiPlayer {
         timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: {[weak self] (time) in
             guard let strongSelf = self else { return }
             if strongSelf.player.currentItem?.status == .readyToPlay {
-                
-                // MARK: - Workaround for AirPlay connection cause `addPeriodicTimeObserver` was not returning the correct time :(
-                if time.seconds < strongSelf.timeDelayedExternal && strongSelf.timeDelayedExternal != 0 && strongSelf.player.isExternalPlaybackActive {
-                    let time = CMTime(seconds: strongSelf.timeDelayedExternal, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale))
-                    strongSelf.player.seek(to: time)
-                    strongSelf.timeDelayedExternal = 0
-                    
-                } else {
-                    strongSelf.currentTime = time.seconds
-                }
-                
-                print(strongSelf.currentTime)
+                strongSelf.currentTime = time.seconds
             }
         })
         

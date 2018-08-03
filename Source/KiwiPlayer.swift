@@ -76,22 +76,20 @@ open class KiwiPlayer: NSObject {
         }
     }
     
-    /// Workaround to represents the exactly time to seek when is connecting whit AirPlay
-    internal var timeDelayedExternal: Double = 0
-    
     /// It's the next item that will raplace the `currentItem` on player
     internal var nextItem: AVPlayerItem?
     
     /// Represent current `AVPlayerItem` in `itemsQueue` and buffers the next video on `nextPlayer`
     internal var currentItem: AVPlayerItem? {
-        didSet {
-            if let oldItem = oldValue {
+        get { return player.currentItem }
+        set {
+            if let oldItem = currentItem {
                 playerItemRemoveObservers(oldItem)
             }
             
-            self.nextItem = findNextElement(currentItem: currentItem)
-            addPlayerItemObservers(currentItem)
-            replaceCurrentItem(currentItem)
+            self.nextItem = findNextElement(currentItem: newValue)
+            addPlayerItemObservers(newValue)
+            player.replaceCurrentItem(with: newValue)
         }
     }
     
@@ -140,13 +138,8 @@ open class KiwiPlayer: NSObject {
     
     internal func setPlayerFromBeginning() {
         guard !itemsQueue.isEmpty else { fatalError("You need to setVideosURL before try to play") }
-        
         currentItem = itemsQueue.first
         player.seek(to: kCMTimeZero)
-    }
-    
-    internal func replaceCurrentItem(_ item: AVPlayerItem?) {
-        player.replaceCurrentItem(with: item)
     }
 }
 
@@ -234,7 +227,6 @@ extension KiwiPlayer {
             } else {
                 itemToSeek = item
                 currentTime = secondFormated
-                timeDelayedExternal = secondFormated
                 break searchItemLoop
             }
         }
@@ -245,7 +237,7 @@ extension KiwiPlayer {
                 currentItem = itemToSeek
             }
             
-            player.seek(to: CMTime(seconds: secondFormated, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale))) {[weak self] (finished) in
+            currentItem?.seek(to: CMTime(seconds: secondFormated, preferredTimescale: CMTimeScale(kCMTimeMaxTimescale))) {[weak self] (finished) in
                 guard let strongSelf = self else { return }
                 strongSelf.play()
             }

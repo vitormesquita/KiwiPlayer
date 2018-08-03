@@ -49,7 +49,10 @@ extension KiwiPlayer {
         if let nextItem = nextItem {
             currentItem = nextItem
             
-//            player.seek(to: kCMTimeZero)
+            currentItem?.seek(to: kCMTimeZero) {[weak self] (finished) in
+                guard let strongSelf = self else { return }
+                strongSelf.player.play()
+            }
             
         } else {
             stop()
