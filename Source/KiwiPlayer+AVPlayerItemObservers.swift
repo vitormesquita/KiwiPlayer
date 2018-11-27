@@ -105,8 +105,8 @@ extension KiwiPlayer {
             currentItem = nextItem
             
             currentItem?.seek(to: .zero) {[weak self] (finished) in
-                guard let strongSelf = self else { return }
-                strongSelf.player.play()
+                guard let self = self, finished else { return }
+                self.play()
             }
             
         } else {
