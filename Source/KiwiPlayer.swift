@@ -50,14 +50,30 @@ open class KiwiPlayer: NSObject {
     /// QueuePlayer's delegate to notify when change something
     public weak var delegate: KiwiPlayerDelegate?
     
-    /// Pause player automatically when app resigning active.
+    /// Indicates a preferred pause player automatically when app resigning active.
     public var pauseWhenResigningActive: Bool = true
     
-    /// Pause player automatically when app enter in background.
+    /// Indicates a preferred pause player automatically when app enter in background.
     public var pauseWhenEnterBackground: Bool = true
     
-    /// Play automatically when app enter in foreground
+    /// Indicates a preferred play automatically when app enter in foreground
     public var playWhenEnterForeground: Bool = true
+    
+    /// Indicates the desired limit of network bandwidth consumption for this item.
+    public var preferredPeakBitRate: Double = 0 {
+        didSet {
+            currentItem?.preferredPeakBitRate = preferredPeakBitRate
+        }
+    }
+    
+    /// Indicates a preferred upper limit on the resolution of the video to be downloaded and rendered by the player.
+    public var preferredMaximumResolution: CGSize = .zero {
+        didSet {
+            if #available(iOS 11.0, *) {
+                currentItem?.preferredMaximumResolution = preferredMaximumResolution
+            }
+        }
+    }
     
     /// It's the `playerLayer`'s video player
     internal var player: AVPlayer
@@ -89,6 +105,12 @@ open class KiwiPlayer: NSObject {
             
             self.nextItem = findNextElement(currentItem: newValue)
             addPlayerItemObservers(newValue)
+            
+            newValue?.preferredPeakBitRate = preferredPeakBitRate
+            if #available(iOS 11.0, *) {
+                newValue?.preferredMaximumResolution = preferredMaximumResolution
+            }
+            
             player.replaceCurrentItem(with: newValue)
         }
     }
@@ -136,6 +158,7 @@ open class KiwiPlayer: NSObject {
         delegate = nil
     }
     
+    /// Find next AVPlayerItem on queue to is pre loading it
     internal func findNextElement(currentItem: AVPlayerItem?) -> AVPlayerItem? {
         guard let currentItem = currentItem else { return nil }
         
@@ -145,6 +168,7 @@ open class KiwiPlayer: NSObject {
         return nil
     }
     
+    /// Set Queue at the beginning
     internal func setPlayerFromBeginning() {
         guard !itemsQueue.isEmpty else { fatalError("You need to setVideosURL before try to play") }
         currentItem = itemsQueue.first
@@ -196,7 +220,7 @@ extension KiwiPlayer {
         if playbackState == .stopped {
             setPlayerFromBeginning()
         }
- 
+        
         player.play()
         playbackState = .playing
     }
