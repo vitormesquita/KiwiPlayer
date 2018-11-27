@@ -107,7 +107,16 @@ open class KiwiPlayer: NSObject {
         }
     }
     
+    /// KVO oberver to periodic time
     internal var timeObserver: Any?
+    
+    /// Array of AVPlayer obervers
+    internal var playerObservers = [NSKeyValueObservation]()
+    
+    /// Array of AVPlayerItem observers
+    internal var playerItemObservers = [NSKeyValueObservation]()
+    
+    //internal var playerLayerObserver: NSKeyValueObservation? TODO verify the necessity
     
     public override init() {
         playerLayer = AVPlayerLayer()
@@ -139,7 +148,7 @@ open class KiwiPlayer: NSObject {
     internal func setPlayerFromBeginning() {
         guard !itemsQueue.isEmpty else { fatalError("You need to setVideosURL before try to play") }
         currentItem = itemsQueue.first
-        player.seek(to: kCMTimeZero)
+        player.seek(to: .zero)
     }
 }
 
@@ -149,7 +158,7 @@ extension KiwiPlayer {
     /// Total duration from all videos in seconds
     public var totalDurationInSeconds: Float64 {
         get {
-            let totalTime = itemsQueue.reduce(kCMTimeZero) { (total, item) -> CMTime in
+            let totalTime = itemsQueue.reduce(.zero) { (total, item) -> CMTime in
                 return CMTimeAdd(item.asset.duration, total)
             }
             return totalTime.seconds
@@ -181,7 +190,7 @@ extension KiwiPlayer {
     /// Play current video
     public func play() {
         guard !itemsQueue.isEmpty else {
-            fatalError("You need to setVideosURL before try to play")
+            fatalError("You need to call setVideosURL before try to play")
         }
         
         if playbackState == .stopped {

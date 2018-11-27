@@ -9,9 +9,6 @@
 import UIKit
 import AVFoundation
 
-var playerContext = 1
-let externalPlaybackActive = "externalPlaybackActive"
-
 // MARK: - AVPlayer Observer
 extension KiwiPlayer {
     
@@ -25,7 +22,24 @@ extension KiwiPlayer {
             }
         })
         
-        player.addObserver(self, forKeyPath: externalPlaybackActive, options: [.new, .old], context: &playerContext)
+        playerObservers.append(player.observe(\.isExternalPlaybackActive, options: [.new, .old]) {[weak self] (player, change) in
+            guard let self = self else { return }
+            self.delegate?.playbackExternalChanged(player.isExternalPlaybackActive)
+        })
+        
+        if #available(iOS 10.0, *) {
+            self.playerObservers.append(self.player.observe(\.timeControlStatus, options: [.new, .old]) {[weak self] (player, change) in
+                guard let self = self else { return }
+                switch player.timeControlStatus {
+                case .paused:
+                    self.playbackState = .paused
+                case .playing:
+                    self.playbackState = .playing
+                case .waitingToPlayAtSpecifiedRate:
+                    break
+                }
+            })
+        }
     }
     
     internal func removePlayerObserver() {
@@ -34,6 +48,10 @@ extension KiwiPlayer {
             self.timeObserver = nil
         }
         
-        player.removeObserver(self, forKeyPath: externalPlaybackActive, context: &playerContext)
+        for observer in playerObservers {
+            observer.invalidate()
+        }
+        
+        playerObservers.removeAll()
     }
 }

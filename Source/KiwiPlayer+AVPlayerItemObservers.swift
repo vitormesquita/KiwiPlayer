@@ -9,38 +9,93 @@
 import UIKit
 import AVFoundation
 
-var playerItemContext = 0
-
-let playbackBufferEmptyKey = "playbackBufferEmpty"
-let playbackLikelyToKeepUpKey = "playbackLikelyToKeepUp"
-let playbackBufferFullKey = "playbackBufferFull"
-let playbackLoadedTimeRanges = "loadedTimeRanges"
-
 // MARK: - AVPlayerItem observers
 extension KiwiPlayer {
     
     internal func addPlayerItemObservers(_ playerItem: AVPlayerItem?) {
         guard let playerItem = playerItem else { return }
         
-        playerItem.addObserver(self, forKeyPath: playbackBufferEmptyKey, options: [.new, .old], context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackLikelyToKeepUpKey, options: [.new, .old], context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackBufferFullKey, options: [.new, .old], context: &playerItemContext)
-        playerItem.addObserver(self, forKeyPath: playbackLoadedTimeRanges, options: [.new, .old], context: &playerItemContext)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidPlayToEndTime(_:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemFailedToPlayToEndTime(_:)), name: .AVPlayerItemFailedToPlayToEndTime, object: playerItem)
+        
+        playerItemObservers.append(playerItem.observe(\.isPlaybackBufferEmpty, options: [.new, .old]) {[weak self] (item, change) in
+            guard let self = self else { return }
+            
+            if item.isPlaybackBufferEmpty {
+                self.bufferingState = .delayed
+            }
+            
+            switch item.status {
+            case .failed:
+                self.playbackState = .failed
+            default:
+                break
+            }
+        })
+        
+        self.playerItemObservers.append(playerItem.observe(\.isPlaybackLikelyToKeepUp, options: [.new, .old]) {[weak self] (item, change) in
+            guard let self = self else { return }
+            
+            if item.isPlaybackLikelyToKeepUp {
+                self.bufferingState = .ready
+                
+                if self.playbackState == .playing {
+                    self.play()
+                }
+            }
+            
+            switch item.status {
+            case .failed:
+                self.playbackState = .failed
+            default:
+                break
+            }
+        })
+        
+        self.playerItemObservers.append(playerItem.observe(\.loadedTimeRanges, options: [.new, .old]) {[weak self] (item, change) in
+            guard let self = self else { return }
+            
+            self.bufferingState = .ready
+            
+            //            let timeRanges = item.loadedTimeRanges
+            //            if let timeRange = timeRanges.first?.timeRangeValue {
+            //                let bufferedTime = CMTimeGetSeconds(CMTimeAdd(timeRange.start, timeRange.duration))
+            //                if strongSelf._lastBufferTime != bufferedTime {
+            //                    strongSelf._lastBufferTime = bufferedTime
+            //                    strongSelf.executeClosureOnMainQueueIfNecessary {
+            //                        strongSelf.playerDelegate?.playerBufferTimeDidChange(bufferedTime)
+            //                    }
+            //                }
+            //            }
+            //
+            //            let currentTime = CMTimeGetSeconds(object.currentTime())
+            //            let passedTime = strongSelf._lastBufferTime <= 0 ? currentTime : (strongSelf._lastBufferTime - currentTime)
+            //
+            //            if (passedTime >= strongSelf.bufferSizeInSeconds ||
+            //                strongSelf._lastBufferTime == strongSelf.maximumDuration ||
+            //                timeRanges.first == nil) &&
+            //                strongSelf.playbackState == .playing {
+            //                strongSelf.play()
+            //            }
+        })
+        
+        self.playerItemObservers.append(playerItem.observe(\.isPlaybackBufferFull, options: [.new, .old]) {[weak self] (item, change) in
+            guard let self = self else { return }
+            self.bufferingState = .loaded
+        })
     }
     
     internal func playerItemRemoveObservers(_ playerItem: AVPlayerItem?) {
         guard let playerItem = playerItem else { return }
         
-        playerItem.removeObserver(self, forKeyPath: playbackBufferEmptyKey, context: &playerItemContext)
-        playerItem.removeObserver(self, forKeyPath: playbackLikelyToKeepUpKey, context: &playerItemContext)
-        playerItem.removeObserver(self, forKeyPath: playbackBufferFullKey, context: &playerItemContext)
-        playerItem.removeObserver(self, forKeyPath: playbackLoadedTimeRanges, context: &playerItemContext)
-        
         NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
         NotificationCenter.default.removeObserver(self, name: .AVPlayerItemFailedToPlayToEndTime, object: playerItem)
+        
+        for observer in playerItemObservers {
+            observer.invalidate()
+        }
+        
+        playerItemObservers.removeAll()
     }
     
     @objc internal func playerItemDidPlayToEndTime(_ notification: Notification) {
@@ -49,7 +104,7 @@ extension KiwiPlayer {
         if let nextItem = nextItem {
             currentItem = nextItem
             
-            currentItem?.seek(to: kCMTimeZero) {[weak self] (finished) in
+            currentItem?.seek(to: .zero) {[weak self] (finished) in
                 guard let strongSelf = self else { return }
                 strongSelf.player.play()
             }
