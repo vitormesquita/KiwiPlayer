@@ -230,12 +230,14 @@ extension KiwiPlayer {
         }
         
         player.play()
+        playbackState = .playing
     }
     
     /// Pause current video
     public func pause() {
         guard playbackState == .playing else { return }        
         player.pause()
+        playbackState = .paused
     }
     
     /// Stop queue and come back to the first video

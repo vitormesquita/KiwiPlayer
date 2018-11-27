@@ -27,19 +27,19 @@ extension KiwiPlayer {
             self.delegate?.playbackExternalChanged(player.isExternalPlaybackActive)
         })
         
-        if #available(iOS 10.0, *) {
-            self.playerObservers.append(self.player.observe(\.timeControlStatus, options: [.new, .old]) {[weak self] (player, change) in
-                guard let self = self else { return }
-                switch player.timeControlStatus {
-                case .paused:
-                    self.playbackState = .paused
-                case .playing:
-                    self.playbackState = .playing
-                case .waitingToPlayAtSpecifiedRate:
-                    break
-                }
-            })
-        }
+//        if #available(iOS 10.0, *) {
+//            self.playerObservers.append(self.player.observe(\.timeControlStatus, options: [.new, .old]) {[weak self] (player, change) in
+//                guard let self = self else { return }
+//                switch player.timeControlStatus {
+//                case .paused:
+//                    self.playbackState = .paused
+//                case .playing:
+//                    self.playbackState = .playing
+//                case .waitingToPlayAtSpecifiedRate:
+//                    break
+//                }
+//            })
+//        }
     }
     
     internal func removePlayerObserver() {
