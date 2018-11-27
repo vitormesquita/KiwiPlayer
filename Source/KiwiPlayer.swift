@@ -194,16 +194,21 @@ extension KiwiPlayer {
         playbackState = .loading
         
         print("KIWIPLAYER ------> START SET VIDEOS")
-        for url in videosURL {
-            let asset = AVURLAsset(url: url, options: .none)
-            let item = AVPlayerItem(asset: asset)
-            self.itemsQueue.append(item)
+        
+        DispatchQueue.global(qos: .background).async {
+            
+            for url in videosURL {
+                let asset = AVURLAsset(url: url, options: .none)
+                let item = AVPlayerItem(asset: asset)
+                self.itemsQueue.append(item)
+            }
+            
+            DispatchQueue.main.async {
+                self.setPlayerFromBeginning()
+                self.playbackState = .ready
+                print("KIWIPLAYER ------> END SET VIDEOS")
+            }
         }
-        
-        setPlayerFromBeginning()
-        playbackState = .ready
-        
-        print("KIWIPLAYER ------> END SET VIDEOS")
     }
     
     /// Set `currentPlayer` with first item in queue
