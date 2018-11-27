@@ -53,30 +53,8 @@ extension KiwiPlayer {
         })
         
         self.playerItemObservers.append(playerItem.observe(\.loadedTimeRanges, options: [.new, .old]) {[weak self] (item, change) in
-            guard let self = self else { return }
-            
+            guard let self = self else { return }            
             self.bufferingState = .ready
-            
-            //            let timeRanges = item.loadedTimeRanges
-            //            if let timeRange = timeRanges.first?.timeRangeValue {
-            //                let bufferedTime = CMTimeGetSeconds(CMTimeAdd(timeRange.start, timeRange.duration))
-            //                if strongSelf._lastBufferTime != bufferedTime {
-            //                    strongSelf._lastBufferTime = bufferedTime
-            //                    strongSelf.executeClosureOnMainQueueIfNecessary {
-            //                        strongSelf.playerDelegate?.playerBufferTimeDidChange(bufferedTime)
-            //                    }
-            //                }
-            //            }
-            //
-            //            let currentTime = CMTimeGetSeconds(object.currentTime())
-            //            let passedTime = strongSelf._lastBufferTime <= 0 ? currentTime : (strongSelf._lastBufferTime - currentTime)
-            //
-            //            if (passedTime >= strongSelf.bufferSizeInSeconds ||
-            //                strongSelf._lastBufferTime == strongSelf.maximumDuration ||
-            //                timeRanges.first == nil) &&
-            //                strongSelf.playbackState == .playing {
-            //                strongSelf.play()
-            //            }
         })
         
         self.playerItemObservers.append(playerItem.observe(\.isPlaybackBufferFull, options: [.new, .old]) {[weak self] (item, change) in
@@ -105,8 +83,8 @@ extension KiwiPlayer {
             currentItem = nextItem
             
             currentItem?.seek(to: .zero) {[weak self] (finished) in
-                guard let self = self, finished else { return }
-                self.play()
+                guard let self = self else { return }
+                self.player.play()
             }
             
         } else {

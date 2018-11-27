@@ -193,6 +193,7 @@ extension KiwiPlayer {
     public func setVideosURL(_ videosURL: [URL]) {
         playbackState = .loading
         
+        print("KIWIPLAYER ------> START SET VIDEOS")
         for url in videosURL {
             let asset = AVURLAsset(url: url, options: .none)
             let item = AVPlayerItem(asset: asset)
@@ -201,6 +202,8 @@ extension KiwiPlayer {
         
         setPlayerFromBeginning()
         playbackState = .ready
+        
+        print("KIWIPLAYER ------> END SET VIDEOS")
     }
     
     /// Set `currentPlayer` with first item in queue
