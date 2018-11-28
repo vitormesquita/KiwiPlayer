@@ -42,8 +42,6 @@ class ViewController: UIViewController {
 
         view.layer.insertSublayer(queuePlayer.playerLayer, at: 0)
         
-        slider.maximumValue = Float(queuePlayer.totalDurationInSeconds)
-        
         routerPickerView.activeTintColor = .red
         routerPickerView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(routerPickerView)
@@ -107,7 +105,9 @@ extension ViewController: KiwiPlayerDelegate {
     }
     
     func bufferingStateDidChange(_ bufferState: BufferingState) {
-        
+        if bufferState == .ready {
+            slider.maximumValue = Float(queuePlayer.totalDurationInSeconds)
+        }
     }
     
     func playbackStateDidChange(_ playerState: PlaybackState) {
