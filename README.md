@@ -13,7 +13,7 @@ Kiwi treats the playlist of videos as a single video than the *Total durantion* 
 ## Requirements 
 
 - Xcode 9.0+
-- Swift 4.0+
+- Swift 4.2+
 
 ## Installation
 
