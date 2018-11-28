@@ -193,8 +193,6 @@ extension KiwiPlayer {
     public func setVideosURL(_ videosURL: [URL]) {
         playbackState = .loading
         
-        print("KIWIPLAYER ------> START SET VIDEOS")
-        
         DispatchQueue.global(qos: .background).async {
             
             for url in videosURL {
@@ -206,7 +204,6 @@ extension KiwiPlayer {
             DispatchQueue.main.async {
                 self.setPlayerFromBeginning()
                 self.playbackState = .ready
-                print("KIWIPLAYER ------> END SET VIDEOS")
             }
         }
     }
